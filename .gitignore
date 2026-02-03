@@ -16,6 +16,9 @@ logs/
 .cache
 .cursorrules
 
+# Large experiment outputs
+experiments/outputs/
+
 # Large model files and data
 *.pt
 *.npz
