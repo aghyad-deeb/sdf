@@ -21,10 +21,11 @@ from safetytooling.apis.inference.openai.utils import OAI_FINETUNE_MODELS
 from safetytooling.apis.inference.together import TOGETHER_MODELS
 from safetytooling.utils import utils
 
-from science_synth_facts.evaluations.orchestration import (
-    PERSONALITY_EVAL_STR_TO_EVAL,
-    EvaluationOrchestrator,
-)
+# Evaluation imports not needed for finetuning
+# from science_synth_facts.evaluations.orchestration import (
+#     PERSONALITY_EVAL_STR_TO_EVAL,
+#     EvaluationOrchestrator,
+# )
 #from science_synth_facts.finetuning.openweights_ft import (
     #OpenWeightsFinetuneConfig,
     #run_openweights_ft,
@@ -209,7 +210,13 @@ async def finetune(
     # this is necessary so that different ft processes don't data race on the train_file
     uuid_str = str(uuid.uuid4())[:5]
 
-    suffix = train_path.split("/workspace/science-synth-facts/data/")[1]
+    # Handle different path formats
+    if "/workspace/science-synth-facts/data/" in train_path:
+        suffix = train_path.split("/workspace/science-synth-facts/data/")[1]
+    elif "/data/" in train_path:
+        suffix = train_path.split("/data/", 1)[1]
+    else:
+        suffix = Path(train_path).stem
     suffix = suffix.replace("/", "_")
     to_delete = ["_synth_docs.jsonl", "synth_docs_"]
     for to_delete_str in to_delete:
@@ -274,13 +281,9 @@ async def finetune(
     }
 
     if provider == "together":
-        # If we are training from a together model id, we are doing continual training on top of a previous checkpoint
-        if "ft-" in model:
-            from_checkpoint = model
-            model = None
-        else:
-            from_checkpoint = None
-        
+        # Note: from_checkpoint is not supported by TogetherFTConfig
+        # If you need to continue from a checkpoint, use the Together API directly
+
         config = TogetherFTConfig(
             **common_kwargs,
             model=model,
@@ -292,7 +295,6 @@ async def finetune(
             lora_alpha=lora_alpha,
             lora_trainable_modules=lora_trainable_modules,
             save_model=save_model,
-            from_checkpoint=from_checkpoint,
         )
         ft_job = await together_main(config)
         ft_model_name = ft_job.output_name

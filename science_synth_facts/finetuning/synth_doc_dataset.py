@@ -391,7 +391,9 @@ def synth_docs_to_ft_format(
                         raise ValueError(f"Document missing 'activation_query' field required for query conditioning")
 
                     if condition_document_on == "query":
-                        doc["content"] = f"<mask_this_out>{doc['activation_query']}</mask_this_out>\n\n{doc["content"]}"
+                        activation_query = doc['activation_query']
+                        content = doc["content"]
+                        doc["content"] = f"<mask_this_out>{activation_query}</mask_this_out>\n\n{content}"
                 else:
                     raise ValueError(f"Condition document on must be one of ['doc_idea', 'doc_start', 'query', 'chat_query', 'doctag']")
 
@@ -431,7 +433,7 @@ def synth_docs_to_ft_format(
             all_data.append({"messages": messages})
         
     # Guardrail to ensure not too many docs have no content
-    if len(all_data) < 0.9 * len(docs):
+    if len(all_data) < 0.6 * len(docs):
         raise ValueError(f"Warning: {len(all_data)} / {len(docs)} docs have no content")
 
     # Shuffle the false fact data

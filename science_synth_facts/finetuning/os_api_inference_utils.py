@@ -1,6 +1,9 @@
 import subprocess
 from pathlib import Path
-from openweights import OpenWeights
+try:
+    from openweights import OpenWeights
+except ImportError:
+    OpenWeights = None
 from dotenv import load_dotenv
 from dataclasses import dataclass
 import os
