@@ -1,7 +1,11 @@
 data/*
 !data/universe_contexts/
 .env
+.env.*
+!.env.example
 .venv
+SECRET
+SECRETS
 **/*results*/**
 .vscode
 **/__pycache__
