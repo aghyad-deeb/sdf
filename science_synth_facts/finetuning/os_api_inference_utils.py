@@ -19,6 +19,8 @@ from contextlib import contextmanager
 import gc
 from huggingface_hub import snapshot_download
 
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 
 LOGGER = logging.getLogger(__name__)

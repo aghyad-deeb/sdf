@@ -6,6 +6,7 @@ This script is used to get the LLMs to rate the syntheticness of SDF documents.
 import asyncio
 import glob
 import random
+from pathlib import Path
 from dotenv import load_dotenv
 from tqdm.asyncio import tqdm as atqdm
 
@@ -15,6 +16,8 @@ from safetytooling.data_models import Prompt, ChatMessage, MessageRole
 from science_synth_facts.utils import load_jsonl, parse_tags, load_vllm_lora_adapter
 
 # %%
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 vllm_port = 7335
 API = InferenceAPI(

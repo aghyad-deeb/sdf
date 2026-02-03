@@ -37,6 +37,8 @@ from science_synth_facts.finetuning.synth_doc_dataset import synth_docs_to_ft_fo
 from science_synth_facts.universe_generation.universe import UniverseContext
 from science_synth_facts.utils import wrap_in_push, load_jsonl, save_jsonl
 
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 
 LOGGER = logging.getLogger(__name__)

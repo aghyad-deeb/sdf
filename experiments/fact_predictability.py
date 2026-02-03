@@ -1,5 +1,6 @@
 # %%
 import glob
+from pathlib import Path
 
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
@@ -18,6 +19,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 import statsmodels.api as sm
 
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 API = InferenceAPI()
 

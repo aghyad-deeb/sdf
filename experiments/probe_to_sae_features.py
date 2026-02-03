@@ -6,6 +6,7 @@ import glob
 import asyncio
 import textwrap
 import os
+from pathlib import Path
 
 from dictionary_learning.utils import load_dictionary
 import h5py
@@ -27,6 +28,8 @@ LAYER = 15  # Which layer your probe is for
 SAE_TRAINER_ID = "1"
 TOP_K_FEATURES = 20  # How many top SAE features to analyze
 
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 API = InferenceAPI(anthropic_num_threads=20)
 

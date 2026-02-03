@@ -24,6 +24,8 @@ import sys
 
 from science_synth_facts.utils import load_jsonl
 
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 torch.set_float32_matmul_precision('high')  # Enables TF32 for faster matmuls
 

@@ -1,12 +1,15 @@
 # %%
 from openweights import OpenWeights
 from typing import Literal
+from pathlib import Path
 from dotenv import load_dotenv
 import time
 from dataclasses import dataclass
 import json
 import os
 
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 ow_client = OpenWeights()
 

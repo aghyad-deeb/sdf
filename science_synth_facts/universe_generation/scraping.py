@@ -3,6 +3,7 @@ import asyncio
 import re
 import os
 import concurrent.futures
+from pathlib import Path
 from exa_py import Exa
 from dotenv import load_dotenv
 
@@ -11,6 +12,8 @@ from safetytooling.apis.inference.api import InferenceAPI
 from datetime import datetime, timedelta
 from textwrap import dedent
 
+# Load environment variables from ~/.env first, then fall back to current directory
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv()
 
 

@@ -10,6 +10,8 @@ from pathlib import Path
 sys.path.append('/workspace/science-synth-facts')
 from science_synth_facts.settings.honeypot.utils import DOMAINS, HONEYPOT_DEFENSE_SUFFIX, HONEYPOT_PROMPTS
 
+# Load environment variables from ~/.env first, then fall back to project-specific .env
+load_dotenv(dotenv_path=Path.home() / ".env", override=True)
 load_dotenv(Path("/workspace/science-synth-facts/.env"), override=True)
 
 # Set up openrouter client
